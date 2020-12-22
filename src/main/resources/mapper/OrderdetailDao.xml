@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.OrderdetailDao">
+
+    <resultMap type="com.example.entity.Orderdetail" id="OrderdetailMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="ordersId" column="orders_id" jdbcType="INTEGER"/>
+        <result property="itemsId" column="items_id" jdbcType="INTEGER"/>
+        <result property="itemsNum" column="items_num" jdbcType="INTEGER"/>
+        <association property="orders" javaType="com.example.entity.Orders">
+            <id property="id" column="orders_id"></id>
+            <result property="number" column="orders_number"></result>
+            <result property="userId" column="orders_user_id"></result>
+            <result property="createtime" column="orders_createtime"></result>
+        </association>
+        <association property="items" javaType="com.example.entity.Items">
+            <id property="id" column="items_id"></id>
+            <result property="name" column="items_name"></result>
+            <result property="price" column="items_price"></result>
+            <result property="detail" column="items_detail"></result>
+            <result property="pic" column="items_pic"></result>
+        </association>
+    </resultMap>
+
+
+
+    <select id="findByOrdersId" resultMap="OrderdetailMap">
+        select
+            t.id, t.orders_id, t.items_id, t.items_num,
+            i.name items_name,i.price items_price, i.detail items_detail,i.pic items_pic,
+            s.number orders_number,s.user_id orders_userId,s.createtime orders_createtime
+        from orderdetail t
+        LEFT JOIN orders s ON s.id = t.orders_id
+        LEFT JOIN items i ON i.id = t.items_id
+        where t.orders_id = #{ordersId}
+    </select>
+</mapper>

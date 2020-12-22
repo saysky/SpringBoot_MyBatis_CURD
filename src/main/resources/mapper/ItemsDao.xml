@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.ItemsDao">
+
+    <resultMap type="com.example.entity.Items" id="ItemsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="detail" column="detail" jdbcType="VARCHAR"/>
+        <result property="pic" column="pic" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ItemsMap">
+        select
+          id, name, price, detail, pic, createtime
+        from items
+        where id = #{id}
+    </select>
+
+
+
+    <select id="findOverPrice" resultMap="ItemsMap">
+        select
+          id, name, price, detail, pic, createtime
+        from items
+        where price &gt; #{price}
+    </select>
+
+</mapper>
